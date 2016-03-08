@@ -1,0 +1,103 @@
+package hashfunction;
+
+import java.util.Arrays;
+
+/**
+ *
+ * @author Mark
+ */
+public class HashFunction {
+
+    Node[] theArray;
+    int arraySize;
+    
+    public static void main(String[] args) {
+      
+        HashFunction theFunc = new HashFunction(30);
+        
+        String[] elementsToAdd = {"1", "5", "7", "9", "15", "330", "245", "30", "29", "29", "58", "150", "178", "154", "158", "130", "143","1", "5", 
+            "7", "9", "15", "330", "245", "30", "29", "29", "58", "150", "178", "154", "158", "130", "143", "1", "5", "7", "9", "15", "330", "245", 
+            "30", "29", "29", "58", "150", "178", "154", "158", "130", "143", "999"};
+        
+        theFunc.insert(elementsToAdd);
+        
+        theFunc.displayTheStack();
+        
+        theFunc.find("999");
+    }
+    
+    public int find(String query){
+        int location = Integer.parseInt(query) % arraySize;
+            
+        if(theArray[location] == null){
+            System.out.println("Item was not found at location: " + location);
+            return 0;
+        }
+        
+        Node current = theArray[location];
+        
+        while(current != null){
+            if(current.data == query){
+                System.out.println("Found item " + query + " at location " + location);
+                return 0;
+            }
+            current = current.next;
+        }
+        
+        System.out.println("Item was not found");
+        return 0;
+        
+    }
+    
+    public void insert(String[] stringForArray){
+        for(int n = 0; n < stringForArray.length; n++)
+        {
+            
+            //theArray[stringForArray[n] % stringsForArray] = stringsForArray[n];
+            
+            Node newNode = new Node(stringForArray[n]);
+            
+            int insertLocation = Integer.parseInt(stringForArray[n]) % arraySize;
+            
+            if(theArray[insertLocation] == null)
+            {
+                System.out.println("Inserting " + stringForArray[n] + " at location " + insertLocation);
+                theArray[insertLocation] = newNode;
+            }
+            else
+            {
+                System.out.println("Collision for " + stringForArray[n] + " at location " + insertLocation );
+                
+                newNode.next = theArray[insertLocation];
+                
+                theArray[insertLocation] = newNode;
+                
+            }
+            
+        }
+    }
+    
+    HashFunction(int size){
+        
+        arraySize = size;
+        theArray = new Node[size];
+        
+    }
+    
+    public void displayTheStack(){
+        
+        for(int i = 0; i < arraySize; i++){
+            
+            Node current = theArray[i];
+            
+            System.out.print(i + ": " + current);
+            while(current != null && current.next != null){
+            System.out.print(" -> " + current.next);
+            current = current.next;
+            }
+            System.out.print("\n");
+        }
+            
+    }
+    
+}
